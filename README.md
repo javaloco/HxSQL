@@ -3,14 +3,15 @@ Find sql in xml file, generate sql statement with parameter, like iBatis.
 
 使用jfinal开发web项目时，希望sql语句能单独配置在xml文件中，并具有基本的、类似于iBatis的条件语句判断功能，于是开发了HxSQL。
 
-加载HxSQL：
-
+## 加载HxSQL：
+``` java
 public void afterJFinalStart(){		
 		SQLConfigLoader.getInstance().loadSQLXmlSet("/com/baymax/etc/db/xml/SQL_SET.xml");
 }
+```
 
-SQL_SET.xml 文件示例：
-
+## SQL_SET.xml 文件示例：
+``` xml
 <?xml version="1.0" encoding="UTF-8"?>
 <set>
 	<sqlXml name="/com/baymax/etc/db/xml/PvgUser.xml"/>
@@ -20,9 +21,10 @@ SQL_SET.xml 文件示例：
 	<sqlXml name="/com/baymax/etc/db/xml/PvgUserRole.xml"/>
 	<sqlXml name="/com/baymax/etc/db/xml/PvgPermissionResource.xml"/>
 </set>
+```
 
-PvgUser.xml 文件示例：
-
+## PvgUser.xml 文件示例：
+``` xml
 <?xml version="1.0" encoding="UTF-8" ?>
 <root namespace="pvg_user">
 	<type>
@@ -115,5 +117,6 @@ PvgUser.xml 文件示例：
 	</sql>
 	
 </root>
+```
 
 未完待续...
