@@ -6,7 +6,7 @@ Find sql in xml file, generate sql statement with parameter, like iBatis.
 ## 加载HxSQL：
 ``` java
 public void afterJFinalStart(){		
-		SQLConfigLoader.getInstance().loadSQLXmlSet("/com/baymax/etc/db/xml/SQL_SET.xml");
+	SQLConfigLoader.getInstance().loadSQLXmlSet("/com/baymax/etc/db/xml/SQL_SET.xml");
 }
 ```
 
