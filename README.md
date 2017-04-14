@@ -119,4 +119,30 @@ public void afterJFinalStart(){
 </root>
 ```
 
+## 使用HxSQL：
+``` java
+public List<PvgUser> findByParentID(int id) {
+	Map<String, Object> argsMap = new HashMap<String, Object>(1);
+	argsMap.put(Const.pure(Const.USER.PARENT_ID), id);
+	
+	Conclusion oConclusion = HxSQL.getSql(NAME_SPACE, "select_by_parentId_order_asc", argsMap);
+	String sql = oConclusion.getSql();
+	Object[] argsValues = oConclusion.getArgsValuesBeta();
+	
+	return PvgUser.dao.find(sql, argsValues);
+}
+```
+
+``` java
+Map<String, Object> argsMap = new HashMap<String, Object>();
+argsMap.put(key, value);
+......
+
+String sqlSelection = HxSQL.getSql(NAME_SPACE, "select_for_show");
+Conclusion oConclusion = HxSQL.getSql(NAME_SPACE, "filter_records", argsMap);
+String sqlCondition = oConclusion.getSql();
+Object[] argsValues = oConclusion.getArgsValuesBeta();
+List<PvgUser> list = PvgUser.dao.find(sqlSelection + " " + sqlCondition, argsValues);
+```
+
 未完待续...
