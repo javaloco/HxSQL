@@ -145,7 +145,7 @@ Object[] argsValues = oConclusion.getArgsValuesBeta();
 List<PvgUser> list = PvgUser.dao.find(sqlSelection + " " + sqlCondition, argsValues);
 ```
 
-## 特殊符号示例
+### 特殊符号示例
 ``` java
 <?xml version="1.0" encoding="UTF-8" ?>
 <root namespace="WorkSheet">
@@ -190,4 +190,19 @@ List<PvgUser> list = PvgUser.dao.find(sqlSelection + " " + sqlCondition, argsVal
 	</if>
 </sql>
 </root> 
+```
+
+``` java
+public List<WorkSheet> findAllByGmtEndRange(int fleetId, Date gmtEnd_start, Date gmtEnd_end) {
+	Map<String, Object> argsMap = new HashMap<String, Object>();
+	argsMap.put(Const.WEB.WORK_SHEET.pure(Const.WEB.WORK_SHEET.FLEET_ID), fleetId);
+	argsMap.put("__start_time", gmtEnd_start);
+	argsMap.put("__end_time", gmtEnd_end);
+		
+	String sqlSelection = SQLConfigLoader.getInstance().getSql(NS_WORK_SHEET, "select_all_field");
+	Conclusion oConclusion = SQLConfigLoader.getInstance().getSql(NS_WORK_SHEET, "filter_records_for_report", argsMap);
+	String sqlCondition = oConclusion.getSql();
+	Object[] argsValues = oConclusion.getArgsValuesBeta();
+	return WorkSheet.dao.find(sqlSelection + sqlCondition, argsValues);
+}
 ```
