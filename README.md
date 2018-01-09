@@ -145,6 +145,41 @@ Object[] argsValues = oConclusion.getArgsValuesBeta();
 List<PvgUser> list = PvgUser.dao.find(sqlSelection + " " + sqlCondition, argsValues);
 ```
 
+### update的使用示例
+``` java
+<sql id="delete_by_id_with_version">
+	update <include refid="table" /> 
+	   set version = version + 1
+               , is_deleted = 'y'
+	       , modifier = ${modifier}
+	       <if test="remark != null">
+			, remark = ${remark}
+	       </if>
+	 where id =  ${id}
+	   and is_deleted = 'n'
+	   and version = ${version}
+</sql>
+``` 
+
+``` java
+public void delete(int id, int version) {		
+	Map<String, Object> argsMap = new HashMap<String, Object>();
+	argsMap.put(Const.ID, id);
+	argsMap.put("modifier", Pvg.getPvgName());
+	argsMap.put("version", version);
+		
+	Conclusion oConclusion = HxSQL.getSql(NS_WORK_SHEET, "delete_by_id_with_version", argsMap);
+	String sql = oConclusion.getSql();
+	Object[] argsValues = oConclusion.getArgsValues(argsMap);
+		
+	int count = Db.update(sql, argsValues);
+	if(count == 0) {
+		throw new IllegalStateException(I18nDelegate.get(I18nDelegate.KEYS.UPDATE_ERR)); 
+	}
+}
+``` 
+
+
 ### ">"、"<"等符号使用示例
 ``` java
 <?xml version="1.0" encoding="UTF-8" ?>
