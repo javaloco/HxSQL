@@ -145,4 +145,48 @@ Object[] argsValues = oConclusion.getArgsValuesBeta();
 List<PvgUser> list = PvgUser.dao.find(sqlSelection + " " + sqlCondition, argsValues);
 ```
 
-未完待续...
+##特殊符号示例
+<?xml version="1.0" encoding="UTF-8" ?>
+<root namespace="WorkSheet">
+<type>
+	<property name="id" type="Integer" />
+	<property name="staff" type="String" />
+	<property name="__start_time" type="Date" />
+	<property name="__end_time" type="Date" />
+</type>
+
+<sql id="select_all_field">
+	select *
+</sql>
+	
+<sql id="from_table">
+	from <include refid="table" />
+</sql>
+	
+<sql id="table">
+	`work_sheet`
+</sql>
+
+<sql id="filter_records_for_report">
+	from <include refid="table" />
+	where domain = 'fault' 
+	and is_deleted = 'n'
+	<if test="id != null">
+		and id = ${id}
+	</if>
+	<if test="staff != null">
+		and staff like ${staff}
+	</if>
+	<if test="__start_time != null">
+		<![CDATA[
+		and gmt_end >= ${__start_time}
+		]]>
+	</if>
+	<if test="__end_time != null">
+		<![CDATA[
+		and gmt_end < ${__end_time}
+		]]>
+	</if>
+</sql>
+</root> 
+```
