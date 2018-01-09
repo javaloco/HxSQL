@@ -243,7 +243,51 @@ public Page<SIM> find(int pageNumber, int pageSize) {
 	String sqlSelection = HxSQL.getSql("SIM", "select_all_field");
 	Conclusion oConclusion = HxSQL.getSql("SIM", "filter_records", argsMap);
 	String sqlCondition = oConclusion.getSql();
-	List<String> argsKeys = oConclusion.getArgsKeys();
+	Object[] argsValues = oConclusion.getArgsValuesBeta();
+	Page<SIM> pages = SIM.dao.paginate(pageNumber, pageSize, sqlSelection, sqlCondition, argsValues);
+	return pages;
+}
+``` 
+
+
+### 判断条件中使用值判断的使用示例
+``` java
+<?xml version="1.0" encoding="UTF-8" ?>
+<root namespace="SIM">
+	<type>
+		<property name="search__is_binded" type="String" />
+	</type>
+	
+	<sql id="select_all_field">
+		select *
+	</sql>
+	
+	<sql id="from_table">
+		from SIM
+	</sql>
+
+	<sql id="filter_records">
+		<include refid="from_table" />
+		where is_deleted = 'n'
+		<if test="search__is_binded == 'y'">
+			and oil_tank_id is not null
+		</if>
+		<if test="search__is_binded == 'n'">
+			and oil_tank_id is null
+		</if>	
+		order by id desc
+	</sql>
+</root>
+``` 
+
+``` java
+public Page<SIM> find(int pageNumber, int pageSize) {
+	Map<String, Object> argsMap = new HashMap<String, Object>();
+	argsMap.put("search__is_binded", "y");
+
+	String sqlSelection = HxSQL.getSql("SIM", "select_all_field");
+	Conclusion oConclusion = HxSQL.getSql("SIM", "filter_records", argsMap);
+	String sqlCondition = oConclusion.getSql();
 	Object[] argsValues = oConclusion.getArgsValuesBeta();
 	Page<SIM> pages = SIM.dao.paginate(pageNumber, pageSize, sqlSelection, sqlCondition, argsValues);
 	return pages;
