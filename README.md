@@ -249,6 +249,41 @@ public Page<SIM> find(int pageNumber, int pageSize) {
 }
 ``` 
 
+### "in"的使用示例
+``` java
+...
+<type>
+...
+	<property name="sim_type" type="String" />
+	<property name="oil_tank_id" type="Integer" />
+</type>
+...
+<sql id="select_by_oil_tank_id_and_sim_type">
+	<include refid="select_all_field" />
+	<include refid="from_table" />
+	where oil_tank_id = ${oil_tank_id}
+	  and sim_type in (${sim_type})
+	  and is_deleted = 'n'
+</sql>
+``` 
+
+``` java
+public List<SIM> findSIMID(int oilTankId, String domain) {
+	List<Object> paramSIMTypes = new ArrayList<Object>();
+	paramSIMTypes.add("WCDMA");
+	paramSIMTypes.add("EVDO");
+		
+	Map<String, Object> argsMap = new HashMap<String, Object>();
+	argsMap.put("oil_tank_id", oilTankId);
+	argsMap.put("sim_type", paramSIMTypes);
+		
+	Conclusion oConclusion = HxSQL.getSql("SIM", "select_by_oil_tank_id_and_sim_type", argsMap);
+		
+	List<SIM> oSIMList = SIM.dao.find(oConclusion.getSql(), oConclusion.getArgsValuesBeta());
+	return list;
+}
+``` 
+
 
 ### 判断条件中使用值判断的使用示例
 ``` java
